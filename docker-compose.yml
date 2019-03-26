@@ -8,7 +8,6 @@ services:
       - NET_ADMIN
     environment:
       - PCS_IOTHUB_CONNSTRING
-    command: demo
   publishermodule:
     image: ${REPOSITORY:-localhost:5000/azure-iiot-}opc-publisher:${IMAGE_VERSION:-latest}
     ports:

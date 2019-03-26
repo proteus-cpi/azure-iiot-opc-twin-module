@@ -30,6 +30,14 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
         }
 
         /// <summary>
+        /// Endoint url for direct server access
+        /// </summary>
+        public string[] AlternativeUrls {
+            get => _alternativeUrls;
+            set => _alternativeUrls = value;
+        }
+
+        /// <summary>
         /// User token to pass to server
         /// </summary>
         public JToken Credential {
@@ -108,6 +116,8 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
                                 Type = _credentialType,
                             },
                     Url = _endpointUrl,
+                    AlternativeUrls = _alternativeUrls == null ? null :
+                        new HashSet<string>(_alternativeUrls),
                     ServerThumbprint = _serverThumbprint,
                     ClientCertificate = _clientCertificate
                 });
@@ -120,6 +130,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
         private SecurityMode? _securityMode;
         private byte[] _serverThumbprint;
         private byte[] _clientCertificate;
+        private string[] _alternativeUrls;
         private readonly ITwinServices _twin;
         private readonly ILogger _logger;
     }

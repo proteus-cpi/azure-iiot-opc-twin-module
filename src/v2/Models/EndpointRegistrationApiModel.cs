@@ -31,6 +31,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Models {
             Id = model.Id;
             Endpoint = model.Endpoint == null ? null :
                 new EndpointApiModel(model.Endpoint);
+            EndpointUrl = model.EndpointUrl;
             AuthenticationMethods = model.AuthenticationMethods?
                 .Select(p => p == null ? null : new AuthenticationMethodApiModel(p))
                 .ToList();
@@ -47,6 +48,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Models {
             return new EndpointRegistrationModel {
                 Id = Id,
                 Endpoint = Endpoint?.ToServiceModel(),
+                EndpointUrl = EndpointUrl,
                 AuthenticationMethods = AuthenticationMethods?
                     .Select(p => p?.ToServiceModel()).ToList(),
                 SecurityLevel = SecurityLevel,
@@ -62,6 +64,13 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Models {
         public string Id { get; set; }
 
         /// <summary>
+        /// Original endpoint url of the endpoint
+        /// </summary>
+        [JsonProperty(PropertyName = "EndpointUrl",
+            NullValueHandling = NullValueHandling.Ignore)]
+        public string EndpointUrl { get; set; }
+
+        /// <summary>
         /// Registered site of the endpoint
         /// </summary>
         [JsonProperty(PropertyName = "SiteId",
@@ -69,7 +78,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Models {
         public string SiteId { get; set; }
 
         /// <summary>
-        /// Endpoint information of the registration
+        /// Connectivity information for the registration
         /// </summary>
         [JsonProperty(PropertyName = "Endpoint")]
         public EndpointApiModel Endpoint { get; set; }

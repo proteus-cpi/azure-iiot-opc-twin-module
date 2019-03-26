@@ -7,6 +7,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Models {
     using Microsoft.Azure.IIoT.OpcUa.Registry.Models;
     using Newtonsoft.Json;
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Endpoint model for edgeservice api
@@ -27,6 +28,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Models {
                 throw new ArgumentNullException(nameof(model));
             }
             Url = model.Url;
+            AlternativeUrls = model.AlternativeUrls;
             User = model.User == null ? null :
                 new CredentialApiModel(model.User);
             ServerThumbprint = model.ServerThumbprint;
@@ -40,6 +42,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Models {
         public EndpointModel ToServiceModel() {
             return new EndpointModel {
                 Url = Url,
+                AlternativeUrls = AlternativeUrls,
                 User = User?.ToServiceModel(),
                 ServerThumbprint = ServerThumbprint,
                 SecurityMode = SecurityMode,
@@ -48,10 +51,18 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Models {
         }
 
         /// <summary>
-        /// Endpoint
+        /// Endpoint url to use to connect with
         /// </summary>
         [JsonProperty(PropertyName = "Url")]
         public string Url { get; set; }
+
+        /// <summary>
+        /// Alternative endpoint urls that can be used for
+        /// accessing and validating the server
+        /// </summary>
+        [JsonProperty(PropertyName = "AlternativeUrls",
+            NullValueHandling = NullValueHandling.Ignore)]
+        public HashSet<string> AlternativeUrls { get; set; }
 
         /// <summary>
         /// User Authentication
