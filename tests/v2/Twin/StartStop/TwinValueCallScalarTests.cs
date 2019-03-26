@@ -225,21 +225,21 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Twin.StartStop {
         }
 
         [SkippableFact]
-        public async Task NodeMethodCallStaticScalarMethod4Test1() {
+        public async Task NodeMethodCallBoiler2ResetTest() {
             Skip.IfNot(_runAll);
             using (var harness = new TwinModuleFixture()) {
                 await harness.RunTestAsync(Endpoint, async (endpoint, services) => {
-                    await GetTests(endpoint, services).NodeMethodCallStaticScalarMethod4Test1();
+                    await GetTests(endpoint, services).NodeMethodCallBoiler2ResetTest();
                 });
             }
         }
 
         [SkippableFact]
-        public async Task NodeMethodCallStaticScalarMethod4Test2() {
+        public async Task NodeMethodCallBoiler1ResetTest() {
             Skip.IfNot(_runAll);
             using (var harness = new TwinModuleFixture()) {
                 await harness.RunTestAsync(Endpoint, async (endpoint, services) => {
-                    await GetTests(endpoint, services).NodeMethodCallStaticScalarMethod4Test2();
+                    await GetTests(endpoint, services).NodeMethodCallBoiler1ResetTest();
                 });
             }
         }
