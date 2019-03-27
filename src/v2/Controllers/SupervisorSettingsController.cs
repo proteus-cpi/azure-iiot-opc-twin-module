@@ -34,6 +34,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
                 if (value == null || value.Type == JTokenType.Null) {
                     // Set default
                     LogEx.Level.MinimumLevel = LogEventLevel.Information;
+                    _logger.Information("Setting log level to default level.");
                 }
                 else if (value.Type == JTokenType.String) {
                     // The enum values are the same as in serilog
@@ -42,6 +43,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
                         throw new ArgumentException(
                             $"Bad log level value {value} passed.");
                     }
+                    _logger.Information("Setting log level to {level}", level);
                     LogEx.Level.MinimumLevel = level;
                 }
                 else {
@@ -60,26 +62,21 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
         /// <returns></returns>
         public JToken this[string endpointId] {
             set {
-                if (value == null) {
-                    _endpoints.Remove(endpointId);
+                if (value == null || value.Type == JTokenType.Null) {
+                    _endpoints.AddOrUpdate(endpointId, null);
                     return;
                 }
                 if (value.Type != JTokenType.String ||
                     !value.ToString().IsBase64()) {
                     return;
                 }
-                if (!_endpoints.ContainsKey(endpointId)) {
-                    _endpoints.Add(endpointId, value.ToString());
-                }
-                else {
-                    _endpoints[endpointId] = value.ToString();
-                }
+                _endpoints.AddOrUpdate(endpointId, value.ToString());
             }
             get {
                 if (!_endpoints.TryGetValue(endpointId, out var result)) {
-                    return JValue.CreateNull();
+                    result = null;
                 }
-                return result;
+                return result != null ? JToken.FromObject(result) : JValue.CreateNull();
             }
         }
 
@@ -111,18 +108,14 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
                 }
                 else {
                     try {
-                        if (item.Value.IsBase64()) {
-                            await _activator.ActivateEndpointAsync(item.Key, item.Value);
-                            continue;
-                        }
+                        await _activator.ActivateEndpointAsync(item.Key, item.Value);
                     }
                     catch (Exception ex) {
                         _logger.Error(ex, "Error starting twin {Key}", item.Key);
                     }
                 }
-                _endpoints.Remove(item.Value);
+                _endpoints.Remove(item.Key);
             }
-            _endpoints.Clear();
         }
 
         private readonly Dictionary<string, string> _endpoints;
