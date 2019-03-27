@@ -31,23 +31,22 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
         /// </summary>
         public JToken LogLevel {
             set {
-                switch (value.Type) {
-                    case JTokenType.Null:
-                        // Set default
-                        LogEx.Level.MinimumLevel = LogEventLevel.Information;
-                        break;
-                    case JTokenType.String:
-                        // The enum values are the same as in serilog
-                        if (Enum.TryParse<LogEventLevel>((string)value, true,
-                            out var level)) {
-                            LogEx.Level.MinimumLevel = level;
-                            break;
-                        }
+                if (value == null || value.Type == JTokenType.Null) {
+                    // Set default
+                    LogEx.Level.MinimumLevel = LogEventLevel.Information;
+                }
+                else if (value.Type == JTokenType.String) {
+                    // The enum values are the same as in serilog
+                    if (!Enum.TryParse<LogEventLevel>((string)value, true,
+                        out var level)) {
                         throw new ArgumentException(
                             $"Bad log level value {value} passed.");
-                    default:
-                        throw new NotSupportedException(
-                            $"Bad log level value type {value.Type}");
+                    }
+                    LogEx.Level.MinimumLevel = level;
+                }
+                else {
+                    throw new NotSupportedException(
+                        $"Bad log level value type {value.Type}");
                 }
             }
             // The enum values are the same as in serilog

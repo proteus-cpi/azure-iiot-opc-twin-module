@@ -24,6 +24,10 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
         /// </summary>
         public JToken Discovery {
             set {
+                if (value == null) {
+                    _discovery.Mode = DiscoveryMode.Off;
+                    return;
+                }
                 switch (value.Type) {
                     case JTokenType.Null:
                         _discovery.Mode = DiscoveryMode.Off;
