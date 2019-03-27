@@ -113,7 +113,9 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
                 Assert.Equal(ep1.Registration.Id, status.Endpoints.Single().Id);
                 Assert.Equal(EndpointActivationState.ActivatedAndConnected, status.Endpoints.Single().ActivationState);
                 Assert.Equal(EndpointActivationState.ActivatedAndConnected, ep2.ActivationState);
-                Assert.Equal(EndpointConnectivityState.Connecting, ep2.EndpointState);
+                Assert.True(
+                    ep2.EndpointState == EndpointConnectivityState.Connecting ||
+                    ep2.EndpointState == EndpointConnectivityState.NotReachable);
             });
             }
         }
@@ -136,6 +138,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
                     },
                     ApplicationId = "ua326029342304923"
                 }));
+
                 await hub.CreateOrUpdateAsync(twin);
                 var registry = services.Resolve<IEndpointRegistry>();
                 var endpoints = await registry.ListAllEndpointsAsync();
@@ -181,6 +184,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
                     },
                     ApplicationId = "ua326029342304923"
                 }));
+
                 await hub.CreateOrUpdateAsync(twin);
                 var registry = services.Resolve<IEndpointRegistry>();
                 var endpoints = await registry.ListAllEndpointsAsync();
