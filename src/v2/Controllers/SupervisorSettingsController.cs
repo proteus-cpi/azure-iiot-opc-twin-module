@@ -7,6 +7,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
     using Microsoft.Azure.IIoT.OpcUa.Registry;
     using Microsoft.Azure.IIoT.Module.Framework;
     using Serilog;
+    using Serilog.Events;
     using System;
     using System.Threading.Tasks;
     using System.Collections.Generic;
@@ -24,6 +25,34 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
         /// Called based on the reported connected property.
         /// </summary>
         public bool Connected { get; set; }
+
+        /// <summary>
+        /// Set and get the log level
+        /// </summary>
+        public JToken LogLevel {
+            set {
+                switch (value.Type) {
+                    case JTokenType.Null:
+                        // Set default
+                        LogEx.Level.MinimumLevel = LogEventLevel.Information;
+                        break;
+                    case JTokenType.String:
+                        // The enum values are the same as in serilog
+                        if (Enum.TryParse<LogEventLevel>((string)value, true,
+                            out var level)) {
+                            LogEx.Level.MinimumLevel = level;
+                            break;
+                        }
+                        throw new ArgumentException(
+                            $"Bad log level value {value} passed.");
+                    default:
+                        throw new NotSupportedException(
+                            $"Bad log level value type {value.Type}");
+                }
+            }
+            // The enum values are the same as in serilog
+            get => JToken.FromObject(LogEx.Level.MinimumLevel.ToString());
+        }
 
         /// <summary>
         /// Called to start or remove twins
