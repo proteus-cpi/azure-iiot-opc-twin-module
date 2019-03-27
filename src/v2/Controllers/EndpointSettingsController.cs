@@ -12,6 +12,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
     using System;
     using System.Threading.Tasks;
     using System.Collections.Generic;
+    using System.Linq;
     using Newtonsoft.Json.Linq;
 
     /// <summary>
@@ -32,7 +33,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
         /// <summary>
         /// Endoint url for direct server access
         /// </summary>
-        public string[] AlternativeUrls {
+        public Dictionary<string, string> AlternativeUrls {
             get => _alternativeUrls;
             set => _alternativeUrls = value;
         }
@@ -117,7 +118,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
                             },
                     Url = _endpointUrl,
                     AlternativeUrls = _alternativeUrls == null ? null :
-                        new HashSet<string>(_alternativeUrls),
+                        _alternativeUrls.DecodeAsList().ToHashSetSafe(),
                     ServerThumbprint = _serverThumbprint,
                     ClientCertificate = _clientCertificate
                 });
@@ -130,7 +131,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
         private SecurityMode? _securityMode;
         private byte[] _serverThumbprint;
         private byte[] _clientCertificate;
-        private string[] _alternativeUrls;
+        private Dictionary<string, string> _alternativeUrls;
         private readonly ITwinServices _twin;
         private readonly ILogger _logger;
     }
