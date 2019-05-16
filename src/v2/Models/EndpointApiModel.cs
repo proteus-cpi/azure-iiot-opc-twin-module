@@ -17,7 +17,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Models {
         /// <summary>
         /// Default constructor
         /// </summary>
-        public EndpointApiModel() {}
+        public EndpointApiModel() { }
 
         /// <summary>
         /// Create api model from service model

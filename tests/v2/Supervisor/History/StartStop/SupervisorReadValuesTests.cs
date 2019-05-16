@@ -16,7 +16,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor.History.StartSto
     using System;
 
     [Collection(ReadHistoryCollection.Name)]
-    public class SupervisorReadValuesTests{
+    public class SupervisorReadValuesTests {
 
         public SupervisorReadValuesTests(HistoryServerFixture server) {
             _server = server;

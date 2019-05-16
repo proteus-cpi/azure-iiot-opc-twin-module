@@ -156,7 +156,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.Tests {
 
         private void AssertStopped() {
             Assert.False(_running);
-            var twin =  _hub.GetAsync(DeviceId, ModuleId).Result;
+            var twin = _hub.GetAsync(DeviceId, ModuleId).Result;
             // Assert
             Assert.False((bool)twin.Properties.Reported[TwinProperty.kConnected]);
 
@@ -289,11 +289,11 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.Tests {
             return builder.Build();
         }
 
-        private IIoTHubTwinServices _hub;
-        private string _etag;
-        private DeviceModel _device;
+        private readonly IIoTHubTwinServices _hub;
+        private readonly string _etag;
+        private readonly DeviceModel _device;
         private bool _running;
-        private ModuleProcess _module;
-        private Task<int> _process;
+        private readonly ModuleProcess _module;
+        private readonly Task<int> _process;
     }
 }

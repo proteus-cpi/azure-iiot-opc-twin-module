@@ -93,7 +93,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor.StartStop {
         public async Task NodeReadStaticArraySByteValueVariableTest() {
             // Skip.IfNot(_runAll);
             using (var harness = new TwinModuleFixture()) {
-            await harness.RunTestAsync(async (device, module, services) => {
+                await harness.RunTestAsync(async (device, module, services) => {
                     await GetTests(device, module, services).NodeReadStaticArraySByteValueVariableTest();
                 });
             }
