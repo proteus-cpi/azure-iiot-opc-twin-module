@@ -280,7 +280,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.Tests {
                 .AsImplementedInterfaces();
 
             // Add services
-            builder.RegisterType<RegistryServices>()
+            builder.RegisterType<EndpointRegistry>()
                 .AsImplementedInterfaces();
 
             // Register http client module
