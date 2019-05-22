@@ -92,7 +92,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
                         },
                         ApplicationId = "ua326029342304923"
                     }));
-                    await hub.CreateOrUpdateAsync(twin);
+                    await hub.CreateAsync(twin);
                     var registry = services.Resolve<IEndpointRegistry>();
                     var endpoints = await registry.ListAllEndpointsAsync();
                     var ep1 = endpoints.FirstOrDefault();
@@ -139,7 +139,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
                         ApplicationId = "ua326029342304923"
                     }));
 
-                    await hub.CreateOrUpdateAsync(twin);
+                    await hub.CreateAsync(twin);
                     var registry = services.Resolve<IEndpointRegistry>();
                     var endpoints = await registry.ListAllEndpointsAsync();
                     var ep1 = endpoints.FirstOrDefault();
@@ -185,7 +185,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
                         ApplicationId = "ua326029342304923"
                     }));
 
-                    await hub.CreateOrUpdateAsync(twin);
+                    await hub.CreateAsync(twin);
                     var registry = services.Resolve<IEndpointRegistry>();
                     var endpoints = await registry.ListAllEndpointsAsync();
                     var ep1 = endpoints.FirstOrDefault();
@@ -233,7 +233,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor {
                             },
                             ApplicationId = "uas" + i
                         }));
-                        await hub.CreateOrUpdateAsync(twin);
+                        await hub.CreateAsync(twin);
                     }
 
                     var registry = services.Resolve<IEndpointRegistry>();

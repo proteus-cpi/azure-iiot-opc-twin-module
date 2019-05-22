@@ -298,7 +298,7 @@ Options:
             var logger = LogEx.Console(LogEventLevel.Error);
             var registry = new IoTHubServiceHttpClient(new HttpClient(logger),
                 config, logger);
-            await registry.DeleteAsync(deviceId, moduleId);
+            await registry.DeleteAsync(deviceId, moduleId, null);
         }
 
         /// <summary>
@@ -346,7 +346,7 @@ Options:
                 "SELECT * from devices where IS_DEFINED(tags.DeviceType)");
             foreach (var item in result) {
                 Console.WriteLine($"Deleting {item.Id} {item.ModuleId ?? ""}");
-                await registry.DeleteAsync(item.Id, item.ModuleId);
+                await registry.DeleteAsync(item.Id, item.ModuleId, null);
             }
             if (!includeSupervisors) {
                 return;
@@ -356,7 +356,7 @@ Options:
             var supers = await registry.QueryDeviceTwinsAsync(query);
             foreach (var item in supers) {
                 Console.WriteLine($"Deleting {item.Id} {item.ModuleId ?? ""}");
-                await registry.DeleteAsync(item.Id, item.ModuleId);
+                await registry.DeleteAsync(item.Id, item.ModuleId, null);
             }
         }
 
@@ -388,7 +388,7 @@ Options:
                     }
                 }
             }
-            await registry.CreateOrUpdateAsync(item);
+            await registry.CreateAsync(item, true);
         }
 
         /// <summary>
@@ -399,13 +399,13 @@ Options:
             var logger = LogEx.Console(LogEventLevel.Error);
             var registry = new IoTHubServiceHttpClient(new HttpClient(logger),
                 config, logger);
-            await registry.CreateOrUpdateAsync(new DeviceTwinModel {
+            await registry.CreateAsync(new DeviceTwinModel {
                 Id = deviceId,
                 ModuleId = moduleId,
                 Capabilities = new DeviceCapabilitiesModel {
                     IotEdge = true
                 }
-            });
+            }, true);
             var cs = await registry.GetConnectionStringAsync(deviceId, moduleId);
             return cs;
         }
