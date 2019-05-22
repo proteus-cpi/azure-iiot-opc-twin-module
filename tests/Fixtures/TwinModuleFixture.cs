@@ -28,6 +28,8 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.Tests {
     using Xunit;
     using Microsoft.Azure.IIoT.OpcUa.History.Clients;
     using Microsoft.Azure.IIoT.OpcUa.Protocol.Services;
+    using Microsoft.Azure.IIoT.OpcUa.Edge.Twin;
+    using Microsoft.Azure.IIoT.OpcUa.Twin;
 
     /// <summary>
     /// Harness for opc twin module
@@ -262,10 +264,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.Tests {
                 .AsImplementedInterfaces();
 
             // Add clients
-            builder.RegisterType<TwinClient>()
-                .AsImplementedInterfaces();
-            builder.RegisterType<SupervisorClient>()
-                .AsImplementedInterfaces();
+            builder.RegisterModule<TwinModuleClients>();
             builder.RegisterType<ActivationClient>()
                 .AsImplementedInterfaces();
             builder.RegisterType<DiagnosticsClient>()
@@ -280,8 +279,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.Tests {
                 .AsImplementedInterfaces();
 
             // Add services
-            builder.RegisterType<EndpointRegistry>()
-                .AsImplementedInterfaces();
+            builder.RegisterModule<RegistryServices>();
 
             // Register http client module
             builder.RegisterModule<HttpClientModule>();
